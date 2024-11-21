@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Entity.Product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h4 class="m-0 font-weight-bold text-primary">Product List</h4>
+    </div>
+    <div class="col text-right">
+        @Html.ActionLink("Create", "Create", "Product", null, new { @class = "btn btn-primary float-right" })
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="selectAll" />
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProductCategory.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsVatInclude)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.VatRate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SalePrice)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StockAmount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CriticalStockAmount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsActive)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ModifiedDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ModifiedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Deleted)
+                        </th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="selectRow" data-id="@item.Id" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductCategory.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsVatInclude)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VatRate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SalePrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StockAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CriticalStockAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ModifiedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ModifiedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Deleted)
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            <div>
+                <button type="submit" id="editButton" class="btn btn-outline-primary">Edit</button>
+                <button id="detailsButton" class="btn btn-outline-warning">Details</button>
+                <button type="submit" id="deleteButton" class="btn btn-outline-danger">Delete</button>
+                <button type="submit" id="imageButton" class="btn btn-outline-danger">Add Image</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/js/product.js"></script>

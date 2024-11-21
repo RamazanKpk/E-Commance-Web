@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Entity.Brand>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h4 class="m-0 font-weight-bold text-primary">Brand List</h4>
+    </div>
+    <div class="col text-right">
+        @Html.ActionLink("Create", "Create", "Brand", null, new { @class = "btn btn-primary float-right" })
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Select All <br />
+                            <input type="checkbox" id="selectAll" />
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsActive)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Deleted)
+                        </th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="selectRow" data-id="@item.Id" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Deleted)
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            <div>
+                <button type="submit" id="editButton" class="btn btn-outline-primary">Edit</button>
+                <button id="detailsButton" class="btn btn-outline-warning">Details</button>
+                <button type="submit" id="deleteButton" class="btn btn-outline-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/js/brand.js"></script>

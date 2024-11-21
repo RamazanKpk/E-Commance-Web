@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="423904962c2d473ba77bf3b42d5a1735" Name="Diagram1">
+        <EntityTypeShape EntityType="EntityModel.Brand" Width="1.5" PointX="1.5" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EntityModel.Order" Width="1.5" PointX="5.25" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EntityModel.OrderStatus" Width="1.5" PointX="7.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EntityModel.ProductCategory" Width="1.5" PointX="0.75" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EntityModel.ProductImage" Width="1.5" PointX="5.25" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EntityModel.Product" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EntityModel.UserContact" Width="1.5" PointX="5.25" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EntityModel.UserFavoriteProduct" Width="1.5" PointX="8.25" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EntityModel.UserGroup" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EntityModel.User" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="EntityModel.FK__ProductCa__Brand__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="EntityModel.FK__Orders__ProductI__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="EntityModel.FK__Orders__UserId__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="EntityModel.FK__ProductCa__Paren__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="EntityModel.FK__Products__Catego__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="EntityModel.FK__ProductIm__Produ__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="EntityModel.FK__UserFavor__Produ__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="EntityModel.FK__UserConta__UserI__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="EntityModel.FK__UserFavor__UserI__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="EntityModel.FK__Users__UserGroup__398D8EEE" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

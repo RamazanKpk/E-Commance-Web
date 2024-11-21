@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var merchant_id = ViewBag.MerchantId;
+    var user_ip = ViewBag.UserIp;
+    var merchant_oid = ViewBag.MerchantOid;
+    var email = ViewBag.Email;
+    var payment_type = ViewBag.PaymentType;
+    var payment_amount = Convert.ToInt32(ViewBag.PaymentAmount);
+    var currency = ViewBag.Currency;
+    var test_mode = ViewBag.TestMode;
+    var non_3d = ViewBag.Non3d;
+    var merchant_ok_url = ViewBag.MerchantOkUrl;
+    var merchant_fail_url = ViewBag.MerchantFailUrl;
+    var user_name = ViewBag.UserName;
+    var user_address = ViewBag.UserAddress;
+    var user_phone = ViewBag.UserPhone;
+    var user_basket = ViewBag.UserBasket;
+    var debug_on = ViewBag.DebugOn;
+    var paytr_token = ViewBag.PaytrToken;
+    var non3d_test_failed = ViewBag.Non3dTestFailed;
+    var installment_count = ViewBag.InstallmentCount;
+    var no_installment = ViewBag.NoInstallment;
+    var max_installment = ViewBag.MaxInstallment;
+    var card_type = ViewBag.CardType;
+    var lang = ViewBag.Language;
+}
+<h2>@ViewBag.Title</h2>
+<p>PAYTR API Test</p>
+<form action="@ViewBag.PostUrl" method="post">
+    Kart Sahibi Adı: <input type="text" name="cc_owner" id="cc_owner" value="PAYTR TEST"><br>
+    Kart Numarası: <input type="text" name="card_number" id="card_number" value="4355084355084358"><br>
+    Kart Son Kullanma Ay: <input type="text" name="expiry_month" id="expiry_month" value="12"><br>
+    Kart Son Kullanma Yıl: <input type="text" name="expiry_year" id="expiry_year" value="24"><br>
+    Kart Güvenlik Kodu: <input type="text" name="cvv" id="cvv" value="000"><br>
+
+    <input type="hidden" id="merchant_id" name="merchant_id" value="@merchant_id">
+    <input type="hidden" id="user_ip" name="user_ip" value="@user_ip">
+    <input type="hidden" id="merchant_oid" name="merchant_oid" value="@merchant_oid">
+    <input type="hidden" id="email" name="email" value="@email">
+    <input type="hidden" id="payment_type" name="payment_type" value="@payment_type">
+    <input type="hidden" id="payment_amount" name="payment_amount" value="@payment_amount">
+    <input type="hidden" id="currency" name="currency" value="@currency">
+    <input type="hidden" id="test_mode" name="test_mode" value="@test_mode">
+    <input type="hidden" id="non_3d" name="non_3d" value="@non_3d">
+    <input type="hidden" id="merchant_ok_url" name="merchant_ok_url" value="@merchant_ok_url">
+    <input type="hidden" id="merchant_fail_url" name="merchant_fail_url" value="@merchant_fail_url">
+    <input type="hidden" id="user_name" name="user_name" value="@user_name">
+    <input type="hidden" id="user_address" name="user_address" value="@user_address">
+    <input type="hidden" id="user_phone" name="user_phone" value="@user_phone">
+    <input type="hidden" id="user_basket" name="user_basket" value="@user_basket">
+    <input type="hidden" id="debug_on" name="debug_on" value="@debug_on">
+    <input type="hidden" id="lang" name="lang" value="tr">
+    <input type="hidden" id="paytr_token" name="paytr_token" value="@paytr_token">
+    <input type="hidden" id="non3d_test_failed" name="non3d_test_failed" value="@non3d_test_failed">
+    <input type="hidden" id="no_installment" name="no_installment" value="@no_installment">
+    <input type="hidden" id="max_installment" name="max_installment" value="@max_installment">
+    <input type="hidden" id="installment_count" name="installment_count" value="@installment_count">
+    <input type="hidden" id="card_type" name="card_type" value="@card_type">
+
+
+
+    <input type="submit" value="Submit">
+</form>

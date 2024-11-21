@@ -1,0 +1,282 @@
+﻿@model DataModel.ProductViewModels.ProductListModel
+
+@{
+    ViewBag.Title = "ProductDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Home</a>
+                    @{
+                        var categoryList = ViewBag.Category as List<DataModel.CategoryViewModels.CategoryListModel>;
+                        var subSubCategories = categoryList.Where(c => c.Id == Model.CategoryId).FirstOrDefault();
+                        var subCategory = categoryList.Where(x => x.Id == subSubCategories.ParentId).FirstOrDefault();
+                        var parentCategory = categoryList.Where(x => x.Id == subCategory.ParentId).FirstOrDefault();
+                        if (subSubCategories != null)
+                        {
+                            if (parentCategory.ParentId == null)
+                            {
+                                <a href="@Url.Action("Shop", "Product", new { Id = parentCategory.Id })">@parentCategory.Name</a>
+                                <a href="@Url.Action("Shop", "Product", new { Id = subCategory.Id })">@subCategory.Name</a>
+                                <a href="@Url.Action("Shop", "Product", new { Id = subSubCategories.Id })">@subSubCategories.Name</a>
+                                <span>@Model.Name</span>
+                            }
+                            else
+                            {
+                                @RenderSubcategories(categoryList, parentCategory);
+                            }
+                        }
+                        @helper RenderSubcategories(List<DataModel.CategoryViewModels.CategoryListModel> categories, DataModel.CategoryViewModels.CategoryListModel subCategory)
+                        {
+                            var parentCategory = categories.FirstOrDefault(x => x.Id == subCategory.ParentId);
+                            if (parentCategory != null)
+                            {
+                                RenderSubcategories(categories, parentCategory);
+                                <a href="@Url.Action("Shop", "Product", new { Id = subCategory.Id })">@subCategory.Name</a>
+                            }
+                        }
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product__details__pic">
+
+                    <div class="product__details__pic__left product__thumb nice-scroll">
+                        @foreach (var image in Model.Images)
+                        {
+                            <a class="pt active" href="#product-2">
+                                <img src="~/Content/images/@image.ImageUrl" alt="@Model.Name">
+                            </a>
+                        }
+                    </div>
+                        <div class="product__details__slider__content">
+                            <div class="product__details__pic__slider owl-carousel">
+                                @foreach (var image in Model.Images)
+                                {
+                                    <img data-hash="product-2" class="product__big__img" src="~/Content/images/@image.ImageUrl" alt="">
+                                }
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product__details__text">
+                    @{
+                        var brandList = ViewBag.Brand as List<DataModel.BrandViewModels.BrandListModel>;
+                        var productBrnad = brandList.Where(x => x.Id == Model.BrandId).SingleOrDefault();
+                        <h2>
+                            <span class="font-weight-bold">@productBrnad.Name</span>
+                            <span>@Model.Name</span>
+                        </h2>
+                    }
+
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <span>( 138 reviews )</span>
+                    </div>
+                    <div class="product__details__price">@Model.SalePrice.ToString("C")</div>
+                    <div class="product__details__button">
+                        <div class="quantity">
+                            <span>Quantity:</span>
+                            <div class="pro-qty">
+                                <input type="text" value="1">
+                            </div>
+                        </div>
+                        <a href="#" class="cart-btn" data-id="@Model.Id"><span class="icon_bag_alt"></span> Add to cart</a>
+                        <ul>
+                            <li><a  href="#" class="heart-btn" data-id="@Model.Id"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__details__widget">
+                        <ul>
+                            <li>
+                                <span>Availability:</span>
+                                <div class="stock__checkbox">
+                                    <label for="stockin">
+                                        In Stock
+                                        <input type="checkbox" id="stockin">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <span>Available color:</span>
+                                <div class="color__checkbox">
+                                    <label for="red">
+                                        <input type="radio" name="color__radio" id="red" checked>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label for="black">
+                                        <input type="radio" name="color__radio" id="black">
+                                        <span class="checkmark black-bg"></span>
+                                    </label>
+                                    <label for="grey">
+                                        <input type="radio" name="color__radio" id="grey">
+                                        <span class="checkmark grey-bg"></span>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <span>Available size:</span>
+                                <div class="size__btn">
+                                    <label for="xs-btn" class="active">
+                                        <input type="radio" id="xs-btn">
+                                        xs
+                                    </label>
+                                    <label for="s-btn">
+                                        <input type="radio" id="s-btn">
+                                        s
+                                    </label>
+                                    <label for="m-btn">
+                                        <input type="radio" id="m-btn">
+                                        m
+                                    </label>
+                                    <label for="l-btn">
+                                        <input type="radio" id="l-btn">
+                                        l
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <span>Promotions:</span>
+                                <p>Free shipping</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Description</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <h6>Description</h6>
+                            <p>@Model.Description</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="related__title">
+                    <h5>RELATED PRODUCTS</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/Content/ashion-master/img/product/related/rp-1.jpg">
+                        <div class="label new">New</div>
+                        <ul class="product__hover">
+                            <li><a href="~/Content/ashion-master/img/product/related/rp-1.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Buttons tweed blazer</a></h6>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product__price">$ 59.0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/Content/ashion-master/img/product/related/rp-2.jpg">
+                        <ul class="product__hover">
+                            <li><a href="~/Content/ashion-master/img/product/related/rp-2.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Flowy striped skirt</a></h6>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product__price">$ 49.0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/Content/ashion-master/img/product/related/rp-3.jpg">
+                        <div class="label stockout">out of stock</div>
+                        <ul class="product__hover">
+                            <li><a href="~/Content/ashion-master/img/product/related/rp-3.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Cotton T-Shirt</a></h6>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product__price">$ 59.0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/Content/ashion-master/img/product/related/rp-4.jpg">
+                        <ul class="product__hover">
+                            <li><a href="~/Content/ashion-master/img/product/related/rp-4.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Slim striped pocket shirt</a></h6>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product__price">$ 59.0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Details Section End -->

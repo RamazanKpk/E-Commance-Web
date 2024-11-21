@@ -1,0 +1,150 @@
+﻿@model IEnumerable<DataModel.ProductViewModels.ProductListModel>
+
+@{
+    ViewBag.Title = "Shop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-2">
+                <div class="shop__sidebar">
+                    <div class="sidebar__filter">
+                        <div class="section-title">
+                            <h4>Shop by price</h4>
+                        </div>
+                        <div class="filter-range-wrap">
+                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content" data-min="33" data-max="99"></div>
+                            <div class="range-slider">
+                                <div class="price-input">
+                                    <p>Price:</p>
+                                    <input type="text" id="minamount">
+                                    <input type="text" id="maxamount">
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">Filter</a>
+                    </div>
+                    <div class="sidebar__categories">
+                        <div class="section-title">
+                            <h4>Categories</h4>
+                        </div>
+                        <div class="categories__accordion">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    @{
+                                        var categoryList = ViewBag.Category as List<DataModel.CategoryViewModels.CategoryListModel>;
+
+                                        foreach (var category in categoryList.Where(x => x.ParentId == null))
+                                        {
+                                            <div class="card-heading active">
+                                                <a href="@Url.Action("Shop", "Product", new { Id = category.Id })" class="category-link" data-toggle="collapse" data-target="#collapse-@category.Id">@category.Name</a>
+                                            </div>
+                                            <div id="collapse-@category.Id" class="collapse show" data-parent="#accordionExample">
+                                                <div class="card-body">
+                                                    <ul>
+                                                        @if (category.SubCategories != null && category.SubCategories.Any())
+                                                        {
+                                                            foreach (var subCategory in category.SubCategories)
+                                                            {
+                                                                <li>
+                                                                    <a href="@Url.Action("Shop", "Product", new { Id = subCategory.Id })">@subCategory.Name</a>
+                                                                    @if (subCategory.SubCategories != null && subCategory.SubCategories.Any())
+                                                                    {
+                                                                        <ul>
+                                                                            @RenderSubcategories(subCategory.SubCategories)
+                                                                        </ul>
+                                                                    }
+                                                                </li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @helper RenderSubcategories(List<DataModel.CategoryViewModels.SubCategoryListModel> subcategories)
+                                        {
+                                            <ul>
+                                                @foreach (var subCategory in subcategories)
+                                                {
+                                                    <li>
+                                                        <a href="@Url.Action("Shop", "Product", new { Id = subCategory.Id })">@subCategory.Name</a>
+                                                        @if (subCategory.SubCategories != null && subCategory.SubCategories.Any())
+                                                        {
+                                                            @RenderSubcategories(subCategory.SubCategories)
+                                                        }
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9">
+                <div class="row">
+                    @{
+                        var brandList = ViewBag.Brand as List<DataModel.BrandViewModels.BrandListModel>;
+
+                        foreach (var item in Model)
+                        {
+                            var productWithBrand = brandList.Where(x => x.Id == item.BrandId).SingleOrDefault();
+
+                            <div class="col-lg-3 col-md-6">
+                                <div class="product__item">
+                                    @if (item.Images.Any())
+                                    {
+                                        <div id="carousel-@item.Id" class="carousel slide" data-ride="carousel">
+                                            <div class="carousel-inner">
+                                                @foreach (var image in item.Images)
+                                                {
+                                                    <div class="carousel-item @((image == item.Images.First()) ? "active" : "")">
+                                                        <img class="d-block w-100 image-popup" src="~/Content/images/@image.ImageUrl" alt="@item.Name">
+                                                        <ul class="product__hover">
+                                                            <li><a href="~/Content/images/@image.ImageUrl" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                                            <li><a href="#" class="heart-btn" data-id="@item.Id"><span class="icon_heart_alt"></span></a></li>
+                                                            <li><a href="#" class="cart-btn" data-id="@item.Id"><span class="icon_bag_alt"></span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carousel-@item.Id" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carousel-@item.Id" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+                                    }
+                                <div class="product__item__text">
+                                    @if (productWithBrand != null)
+                                    {
+                                        <h6><span class="font-weight-bold" style="margin-right:5px;">@productWithBrand.Name</span>
+                                    <a href="@Url.Action("ProductDetail", "Product", new { id = item.Id })">@item.Name</a></h6>
+                                    }
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">@item.SalePrice.ToString("C")</div>
+                                </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

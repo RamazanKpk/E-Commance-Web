@@ -1,0 +1,174 @@
+﻿@model DataModel.ProductViewModels.ProductViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+@using (Html.BeginForm("Create", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true)
+    <h4>Create Product</h4>
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(model => model.BrandId, "Brand")
+        @Html.DropDownListFor(model => model.BrandId, new SelectList(Model.Brands, "Value", "Text"), "Select", new { @class = "form-control", @id = "brandDropdown" })
+    </div>
+
+    <div class="form-group" id="mainCategoryDiv" style="display:none;">
+        @Html.LabelFor(model => model.MainCategoryId, "Parent Category")
+        @Html.DropDownListFor(model => model.MainCategoryId, new SelectList(Model.ProductCategories, "Value", "Text"), "Select", new { @class = "form-control", @id = "mainCategoryDropdown" })
+    </div>
+
+    <div class="form-group" id="subCategoryDiv" style="display:none;">
+        @Html.LabelFor(model => model.SubCategoryId, "Sub Category")
+        @Html.DropDownListFor(model => model.SubCategoryId, new SelectList(Model.SubCategories, "Value", "Text"), "Select", new { @class = "form-control", @id = "subCategoryDropdown" })
+    </div>
+
+    <div class="form-group" id="subSubCategoryDiv" style="display:none;">
+        @Html.LabelFor(model => model.SubSubCategoryId, "Sub Category")
+        @Html.DropDownListFor(model => model.SubSubCategoryId, new SelectList(Model.SubSubCategories, "Value", "Text"), "Select", new { @class = "form-control", @id = "subSubCategoryDropdown" })
+    </div>
+
+    <!-- Diğer ürün alanları -->
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, "Product Name")
+        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, "Description")
+        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ImageFiles, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="file" name="ImageFiles" multiple class="form-control" />
+            @Html.ValidationMessageFor(model => model.ImageFiles, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Price, "Price")
+        @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.StockAmount, "Stock Amount")
+        @Html.TextBoxFor(model => model.StockAmount, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsVatInclude, "Is Vat Include")
+        @Html.CheckBoxFor(model => model.IsVatInclude, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.VatRate, "Vat Rate")
+        @Html.TextBoxFor(model => model.VatRate, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsActive, "Is Active")
+        @Html.CheckBoxFor(model => model.IsActive)
+    </div>
+
+    <!-- Diğer alanlar için benzer şekilde ekleyin -->
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+}
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var items = '<option value="">Seçiniz</option>';
+            $('#brandDropdown').change(function () {
+                var brandId = $(this).val();
+
+                if (brandId) {
+                    $.ajax({
+                        url: '@Url.Action("GetParentCategoriesJson", "Product")',
+                        type: 'GET',
+                        data: { Id: brandId },
+                        success: function (data) {
+                            if (data.length > 0) {
+                                $('#mainCategoryDiv').show();
+                                $('#mainCategoryDropdown').empty().append(items);
+                                $.each(data, function (index, item) {
+                                    $('#mainCategoryDropdown').append($('<option>', {
+                                        value: item.Value,
+                                        text: item.Text
+                                    }));
+                                });
+                                $('#subCategoryDiv').hide();
+                                $('#subSubCategoryDiv').hide();
+                                $('#mainCategoryDropdown').change();
+                            } else {
+                                $('#mainCategoryDiv').hide();
+                                $('#subCategoryDiv').hide();
+                                $('#subSubCategoryDiv').hide();
+                            }
+                        }
+                    });
+
+                } else {
+                    $('#mainCategoryDiv').hide();
+                    $('#subCategoryDiv').hide();
+                    $('#subSubCategoryDiv').hide();
+                }
+            });
+
+            $('#mainCategoryDropdown').change(function () {
+                var mainCategoryId = $(this).val();
+                if (mainCategoryId) {
+                    $.ajax({
+                        url: '@Url.Action("GetSubCategoriesJson", "Product")',
+                        type: 'GET',
+                        data: { Id: mainCategoryId },
+                        success: function (data) {
+                            if (data.length > 0) {
+                                $('#subCategoryDiv').show();
+                                $('#subCategoryDropdown').empty().append(items);
+                                $.each(data, function (index, item) {
+                                    $('#subCategoryDropdown').append($('<option>', {
+                                        value: item.Value,
+                                        text: item.Text
+                                    }));
+                                });
+                            } else {
+                                $('#subCategoryDiv').hide();
+                                $('#subSubCategoryDiv').hide();
+                            }
+                        }
+                    });
+                } else {
+                    $('#subCategoryDiv').hide();
+                    $('#subSubCategoryDiv').hide();
+
+                }
+            });
+
+            $('#subCategoryDropdown').change(function () {
+                var subCategoryId = $(this).val();
+                if (subCategoryId) {
+                    $.ajax({
+                        url: '@Url.Action("GetSubCategoriesJson", "Product")',
+                        data: { Id: subCategoryId },
+                        success: function (data) {
+                            if (data.length > 0) {
+                                $('#subSubCategoryDiv').show();
+                                $('#subSubCategoryDropdown').empty().append(items);
+                                $.each(data, function (index, item) {
+                                    $('#subSubCategoryDropdown').append($('<option>', {
+                                        value: item.Value,
+                                        text: item.Text
+                                    }));
+                                });
+                            } else {
+                                $('#subSubCategoryDiv').hide();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+</script>

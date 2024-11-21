@@ -1,0 +1,82 @@
+﻿@model Entity.Order
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_Layout.cshtml";
+}
+
+
+<div>
+    <h4>Order Detail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductUnitPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductUnitPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiscountRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCompleated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCompleated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCanceled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCanceled)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new {@class="btn btn-success"}) 
+    @Html.ActionLink("Back to List", "Index")
+</p>

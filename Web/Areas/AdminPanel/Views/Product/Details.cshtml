@@ -1,0 +1,151 @@
+﻿@model Entity.Product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_Layout.cshtml";
+}
+
+
+<div>
+    <h4>Product Detail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label>@Html.DisplayFor(model => model.Title)-Images</label>
+        </dt>
+        @{
+            var selectList = ViewBag.ProductImages as List<Entity.ProductImage>;
+            <dd>
+                @foreach (var item in selectList)
+                {
+                    <img src="~/Content/images/@item.ImagePath", alt="" class="img-fluid img-thumbnail" />
+                }
+            </dd>
+
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductCategory.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductCategory.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsVatInclude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsVatInclude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VatRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VatRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SalePrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SalePrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StockAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StockAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CriticalStockAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CriticalStockAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Deleted)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new {@class="btn btn-success"}) 
+    @Html.ActionLink("Back to List", "Index", null, new {@class ="btn btn-link"})
+</p>

@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Ticaret</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="~/Content/ashion-master/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/ashion-master/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/ashion-master/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/ashion-master/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/ashion-master/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/ashion-master/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/ashion-master/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/ashion-master/css/style.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/ashion-master/css/main.css" type="text/css">
+</head>
+<body>
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+    <div id="content-wrapper" class="d-flex flex-column">
+        @{Html.RenderAction("Header", "Partial");}
+        @RenderBody()
+        @Html.Partial("Footer")
+    </div>
+
+    <!-- Js Plugins -->
+    <script src="~/Content/ashion-master/js/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/ashion-master/js/bootstrap.min.js"></script>
+    <script src="~/Content/ashion-master/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/Content/ashion-master/js/jquery-ui.min.js"></script>
+    <script src="~/Content/ashion-master/js/mixitup.min.js"></script>
+    <script src="~/Content/ashion-master/js/jquery.countdown.min.js"></script>
+    <script src="~/Content/ashion-master/js/jquery.slicknav.js"></script>
+    <script src="~/Content/ashion-master/js/owl.carousel.min.js"></script>
+    <script src="~/Content/ashion-master/js/jquery.nicescroll.min.js"></script>
+    <script src="~/Content/ashion-master/js/main.js"></script>
+    <script src="~/Scripts/js/userpanel/product.js"></script>
+    <script src="~/Scripts/js/userpanel/shop-cart.js"></script>
+    <script src="~/Scripts/js/userpanel/favorite-product.js"></script>
+</body>
+</html>

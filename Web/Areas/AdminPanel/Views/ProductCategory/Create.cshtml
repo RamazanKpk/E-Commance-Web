@@ -1,0 +1,214 @@
+﻿@model DataModel.CategoryViewModels.CategoryViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <h4>Create Product Category</h4>
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(model => model.BrandId, "Marka")
+        @Html.DropDownListFor(model => model.BrandId, new SelectList(Model.Brands, "Value", "Text"), "Seçiniz", new { @class = "form-control", id = "brandDropdown" })
+    </div>
+
+
+    <div class="form-group" id="parentCategoryDiv" style="display:none;">
+        @Html.LabelFor(model => model.ParentId, "Ana Kategori")
+        @Html.DropDownListFor(model => model.ParentId, new SelectList(Model.ProductCategories, "Value", "Text"), "Seçiniz", new { @class = "form-control", id = "parentCategoryDropdown" })
+        <button type="button" class="btn btn-default" id="addParentCategoryButton">+</button>
+    </div>
+
+    <div class="form-group" id="subCategoryDiv" style="display:none;">
+        @Html.LabelFor(model => model.SubParentId, "Alt Kategori")
+        @Html.DropDownListFor(model => model.SubParentId, new SelectList(Model.SubCategories, "Value", "Text"), "Seçiniz", new { @class = "form-control", id = "subCategoryDropdown" })
+        <button type="button" class="btn btn-default" id="addSubCategoryButton">+</button>
+    </div>
+    <div class="form-group" id="subSubCategoryDiv" style="display:none;">
+        @Html.LabelFor(model => model.SubSubCategoryId, "Sub Category")
+        @Html.DropDownListFor(model => model.SubSubCategoryId, new SelectList(Model.SubSubCategories, "Value", "Text"), "Select", new { @class = "form-control", @id = "subSubCategoryDropdown" })
+        <button type="button" class="btn btn-default" id="addSubSubCategoryButton">+</button>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, "Kategori Adı")
+        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+    </div>
+    <div class="form-group" id="sortOrderDiv">
+        @Html.LabelFor(model => model.SortOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsActive, "Aktif Mi?")
+        @Html.CheckBoxFor(model => model.IsActive)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Ekle</button>
+}
+
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
+<script>
+        $(document).ready(function () {
+            $('#brandDropdown').change(function () {
+                var brandId = $(this).val();
+                if (brandId) {
+                    $.ajax({
+                        url: '@Url.Action("GetParentCategoriesJson", "ProductCategory")',
+                        type: 'GET',
+                        data: { brandId: brandId },
+                        success: function (data) {
+                            if (data.length > 0) {
+                                $('#parentCategoryDiv').show();
+                                $('#parentCategoryDropdown').empty().append('<option value="">Seçiniz</option>');
+                                $.each(data, function (index, item) {
+                                    $('#parentCategoryDropdown').append($('<option>', {
+                                        value: item.Value,
+                                        text: item.Text
+                                    }));
+                                });
+                                $('#subCategoryDiv').hide();
+                                $('#subSubCategoryDiv').hide();
+                                $('#parentCategoryDropdown').change();
+                            } else {
+                                $('#parentCategoryDiv').hide();
+                                $('#subCategoryDiv').hide();
+                                $('#subSubCategoryDiv').hide();
+                            }
+                        }
+                    });
+                } else {
+                    $('#parentCategoryDiv').hide();
+                    $('#subCategoryDiv').hide();
+                    $('#subSubCategoryDiv').hide();
+                }
+            });
+
+            $('#parentCategoryDropdown').change(function () {
+                var parentId = $(this).val();
+                if (parentId) {
+                    $.ajax({
+                        url: '@Url.Action("GetSubCategoriesJson", "ProductCategory")',
+                        type: 'GET',
+                        data: { parentId: parentId },
+                        success: function (data) {
+                            if (data.length > 0) {
+                                $('#subCategoryDiv').show();
+                                $('#subCategoryDropdown').empty().append('<option value="">Seçiniz</option>');
+                                $.each(data, function (index, item) {
+                                    $('#subCategoryDropdown').append($('<option>', {
+                                        value: item.Value,
+                                        text: item.Text
+                                    }));
+                                });
+                            } else {
+                                $('#subCategoryDiv').hide();
+                                $('#subSubCategoryDiv').hide();
+                            }
+                        }
+                    });
+                } else {
+                    $('#subCategoryDiv').hide();
+                    $('#subSubCategoryDiv').hide();
+                }
+            });
+            $('#subCategoryDropdown').change(function () {
+                 var subCategoryId = $(this).val();
+                  if (subCategoryId) {
+                        $.ajax({
+                            url: '@Url.Action("GetSubCategoriesJson", "ProductCategory")',
+                            data: { parentId: subCategoryId },
+                            success: function (data) {
+                                if (data.length > 0) {
+                                    $('#subSubCategoryDiv').show();
+                                    $('#subSubCategoryDropdown').empty().append('<option value="">Seçiniz</option>');
+                                    $.each(data, function (index, item) {
+                                        $('#subSubCategoryDropdown').append($('<option>', {
+                                            value: item.Value,
+                                            text: item.Text
+                                        }));
+                                    });
+                                } else {
+                                    $('#subSubCategoryDiv').hide();
+                                }
+                            }
+                        });
+                    }
+            });
+
+            $('#addParentCategoryButton').click(function () {
+                var brandId = $('#brandDropdown').val();
+                var newParentCategory = prompt("Yeni ana kategori adı:");
+                if (newParentCategory && brandId) {
+                    $.ajax({
+                        url: '@Url.Action("CreateParentCategory", "ProductCategory")',
+                        type: 'POST',
+                        data: { title: newParentCategory, brandId: brandId },
+                        success: function (response) {
+                            if (response.success) {
+                                $('#parentCategoryDropdown').append($('<option>', {
+                                    value: response.newCategoryId,
+                                    text: newParentCategory
+                                }));
+                            } else {
+                                alert("Yeni kategori eklenemedi.");
+                            }
+                        }
+                    });
+                }
+            });
+
+            $('#addSubCategoryButton').click(function () {
+                var parentId = $('#parentCategoryDropdown').val();
+                var brandId = $('#brandDropdown').val();
+                var sortOrder = $('#sortOrderDiv').val();
+                var newSubCategory = prompt("Yeni alt kategori adı:");
+                if (parentId && newSubCategory && brandId && sortOrder) {
+                    $.ajax({
+                        url: '@Url.Action("CreateParentCategory", "ProductCategory")', // Bu metodu alt kategori eklemek için kullanabilirsiniz
+                        type: 'POST',
+                        data: { title: newSubCategory, parentId: parentId, brandId: brandId, sortOrder: sortOrder },
+                        success: function (response) {
+                            if (response.success) {
+                                $('#subCategoryDropdown').append($('<option>', {
+                                    value: response.newCategoryId,
+                                    text: newSubCategory
+                                }));
+                            } else {
+                                alert("Yeni alt kategori eklenemedi.");
+                            }
+                        }
+                    });
+                }
+            });
+            $('#addSubSubCategoryButton').click(function () {
+                var parentId = $('#parentCategoryDropdown').val();
+                var brandId = $('#brandDropdown').val();
+                var subId = $('#subCategoryDiv').val();
+                var sortOrder = $('#sortOrderDiv').val();
+                var newSubCategory = prompt("Yeni alt kategori adı:");
+                if (parentId && newSubCategory && brandId && sortOrder) {
+                    $.ajax({
+                        url: '@Url.Action("CreateParentCategory", "ProductCategory")', // Bu metodu alt kategori eklemek için kullanabilirsiniz
+                        type: 'POST',
+                        data: { title: newSubCategory, parentId: parentId, brandId: brandId, subId: subId, sortOrder: sortOrder },
+                        success: function (response) {
+                            if (response.success) {
+                                $('#subCategoryDropdown').append($('<option>', {
+                                    value: response.newCategoryId,
+                                    text: newSubCategory
+                                }));
+                            } else {
+                                alert("Yeni alt kategori eklenemedi.");
+                            }
+                        }
+                    });
+                }
+            });
+        });
+</script>
